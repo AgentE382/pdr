@@ -14,7 +14,7 @@ Hello World, Hello World, Hello World!
 
 A basic C program looks like the following:
 
-```
+```C
 /* hello world x3 */
 #include <stdio.h>
 int main() {
@@ -47,7 +47,7 @@ C does not have *iostreams* or *stream operators*, such as `<<` (for cout) and `
 
 For example, to print an integer, we would enter:
 
-```
+```C
 printf ("this is an int: %d\n", x);
 ```
 
@@ -82,7 +82,7 @@ and flags:
 
 Some examples:
 
-```
+```C
 printf("pi = %.0f\n", pi);         /* output: pi = 3    */
 printf("pi = '%+10.4f'\n", pi);    /* pi = '   +3.1416' */
 printf("Hello from %s, which begins at %p!\n",  __PRETTY_FUNCTION__, main);  /* Hello from main, which begins at 0x4004f4! */
@@ -94,14 +94,14 @@ This last one uses the `__PRETTY_FUNCTION__` macro, which is a string representa
 
 We've seen variable argument lists in the context of the C calling convention (that's why the parameters are pushed onto the stack in reverse order).  The `...` portion of the `printf()` function signature signifies that it take a variable number of arguments.  I/O functions in C commonly combine this notation with a format string.  Any use of variable argument lists must include clues so that the callee can correctly identify the number and type of its arguments.  An interesting example of a function which uses variable argument lists in a less obvious way is open():
 
-```
+```C
 int open(const char *pathname, int flags);
 int open(const char *pathname, int flags, mode_t mode);
 ```
 
 but C does not support function overloading!  While the `open()` manual page displays the two prototypes above, the actual signature of `open()` is:
 
-```
+```C
 int open(const char *pathname, int flags, ...);
 ```
 
@@ -117,7 +117,7 @@ Be careful of buffer overflow! `scanf()` doesn't know how large your buffer is. 
 
 Some examples:
 
-```
+```C
 int age;
 char grade;
 char school[3];
@@ -150,7 +150,7 @@ Heap control in C is a bit lower level.  Allocation from the heap is achieved th
 
 `malloc()` has the prototype:
 
-```
+```C
 void* malloc(size_t size)
 ```
 
@@ -158,7 +158,7 @@ You must explicitly tell it how much storage you require.  The `sizeof` operator
 
 `free()` is used to deallocate storage originally allocated with `malloc()`, `calloc()`, or `realloc()`.  `free()` in C is analgous to `delete` in C++.  Its prototype is:
 
-```
+```C
 void free(void* ptr)
 ```
 
@@ -170,7 +170,7 @@ If you do manage to develop memory errors, the `MALLOC_CHECK_` environment varia
 
 ### Examples ###
 
-```
+```C
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -210,7 +210,7 @@ C++ does not have classes, but it does have structures.  Early versions of C++ w
 
 A structure definition has the following format:
 
-```
+```C
 struct name {
   type1 member1;
   type2 member2;
@@ -223,7 +223,7 @@ In the above, *name* is optional.  If omitted, the structure is said to be *anon
 
 The following might be a good definition for a list item data structure.  We'll look at more of the list class further on:
 
-```
+```C
 struct list_item {
   struct list_item *prev, *next;
   void *datum;
@@ -238,7 +238,7 @@ A union is a type for which the compiler allocates space sufficient only for the
 
 An anonymous union provides useful syntactic sugar as a structure member.  Take the following example:
 
-```
+```C
 struct {
   int type;
   union {
@@ -263,7 +263,7 @@ case 2:
 
 and compare with:
 
-```
+```C
 union ifd_t {
   int i;
   float f;
@@ -296,19 +296,19 @@ Function pointers are useful in many instances.  The most common of those includ
 
 Syntactically, a function pointer looks like a function prototype, except that the "function name" (actually the name of the pointer) is wrapped in parenthesis with a pointer star at the beginning.  For example:
 
-```
+```C
 int (*pprintf)(const char *format, ...)
 ```
 
 defines a pointer that can point to `printf()` (not particularly useful).  A function's name, without parenthesis, evaluates to its address, thus we can assign the address of `printf()` to `pprintf` with the statement:
 
-```
+```C
 pprintf = printf;
 ```
 
 and you can call `printf()` through the `pprintf` pointer with:
 
-```
+```C
 pprintf("Hello, World!\n");
 ```
 
@@ -316,7 +316,7 @@ pprintf("Hello, World!\n");
 
 `qsort()`, short for quick sort, can sort arrays of data of arbitrary type.  In implementing `qsort()`, the subroutine has no knowledge of how to compare the arbitrary elements being sorted, thus `qsort()` takes a pointer to a comparison function.  Its full prototype looks like this:
 
-```
+```C
 void qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
 ```
 
@@ -326,7 +326,7 @@ The comparison function takes pointers to two elements of the array starting at 
 
 With `list_item_t` defined as above, consider the following:
 
-```
+```C
 struct list {
   list_item_t *head, *tail;
   unsigned length;
