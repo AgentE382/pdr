@@ -20,17 +20,17 @@ A basic C program looks like the following:
 int main() {
     int i;
     for (i = 0; i < 3; i++) {
-        printf ("hello world!\n");
+        printf("Hello, world!\n");
     }
     return 0;
 }
 ```
 
 A few things to note about this program:
-- The `<stdio.h>` was #included (stdio stands for Standard I/O library), which is where `printf()` (and, later, `scanf()`) live.  These are the basic input and output routines in C, analogous to cout and cin in C++.  More on these functions are below
-- There are no namespaces in C
-- Comments are enclosed in `/*` and `*/`.  The `//` notation does not work in pure C, but most C compilers will allow it anyway
-- The iterating variable `i` is not declared within the `for` statement in pure C, but most C compilers will allow it anyway.
+- The `<stdio.h>` was #included (stdio stands for Standard I/O library), which is where `printf()` (and, later, `scanf()`) live.  These are the basic input and output routines in C, analogous to `cout` and `cin` in C++.  More on these functions are below.
+- There are no namespaces in C.
+- Comments are enclosed in `/*` and `*/`. This type of comment can span multiple lines, or part of a line. The `//` notation can also be used as in C++.
+- The iterating variable `i` is not declared within the `for` statement. You may see this in old code, but do not need to write loops this way yourself.
 
 To use `malloc()`, which is the C version of `new`, you will need to include the `<stdlib.h>` file (stdlib is the standard library) - more on `malloc()` is also below.
 
@@ -39,9 +39,9 @@ To use `malloc()`, which is the C version of `new`, you will need to include the
 Input and Output
 ----------------
 
-C does not have *iostreams* or *stream operators*, such as `<<` (for cout) and `>>` (for cin).  For most I/O, we use the `printf()` family of functions (for output) and the `scanf()` family (for input).
+C does not have *iostreams* or *stream operators*, such as `<<` (for `cout`) and `>>` (for `cin`).  For most I/O, we use the `printf()` family of functions (for output) and the `scanf()` family (for input).
 
-### int printf(const char *format, ...) ###
+### `int printf(const char *format, ...)` ###
 
 `printf()` takes a *format string*, containing verbatim text that you want to display and *conversion specifiers* which describe to `printf()` how to interpret and display the remaining arguments.  The conversion specifiers may contain *flags*, which control such things as field width, precision, and format.  All conversion specifiers begin with a `%`.  To print a `%`, your format string must contain `%%`.  Other special characters will have to be escaped with a backslash (i.e., to do a return, we enter `\n`; for a backslash, we enter `\\`).
 
@@ -107,7 +107,7 @@ int open(const char *pathname, int flags, ...);
 
 The variable argument list (mode) is only used if flags includes the bit `O_CREAT`, giving `open()` the information it needs to decide whether or not to access arguments beyond flags.
 
-### int scanf(const char *format, ...) ###
+### `int scanf(const char *format, ...)` ###
 
 `scanf()` converts input, rather than output.  Its format strings look very similar to those of `printf()`, with a few more complex conversions, which we will not cover in this tutorial as they are not often used.  The key point to remember to differentiate usage of `scanf()` and `printf()` is that while `printf()` converts values (as in *pass-by-value*), `scanf()` converts input and thus needs a place to store it (*pass-by-address*, which is really passing a pointer by value; C does not have *pass-by-reference*, only C++ does).
 
@@ -230,7 +230,7 @@ struct list_item {
 } list_item_t;
 ```
 
-Note that in pure C, you will have to declare such a variable either on the last line (this is how `list_item_t` was declared) or via a `struct list_item foo` command.  Note that we have to put `struct` in there (the requirement to list the `struct` (or `class` or `union`) was removed in C++, and some C compilers are lax on requiring it.
+Note that in C, you will have to declare such a variable either on the last line (this is how `list_item_t` was declared) or via a `struct list_item foo` command.  Note that we have to put `struct` in there (the requirement to list the `struct` (or `class` or `union`) was removed in C++.
 
 ### union ###
 
@@ -328,7 +328,7 @@ With `list_item_t` defined as above, consider the following:
 
 ```C
 struct list {
-  list_item_t *head, *tail;
+  struct list_item_t *head, *tail;
   unsigned length;
   int (*compare)(const void *key, const void *with);
   void (*datum_delete)(void *);
@@ -337,7 +337,7 @@ struct list {
 
 This is a type definition for an object-oriented doubly-linked list class in C.  `list_item_t` contains a pointer to a `void` type.  In other words, it can point to anything, so if we want to do sorted insert, we need a comparison function, just as in `qsort()`.  Furthermore, if we destroy the list, we probably want the data contained in it to be returned to the heap.  If that requires a only shallow delete, `free()` can be passed to the constructor, otherwise, a destructor for the stored type must be passed.  If the list is not to be sorted, or if the data is not to be destroyed with the list, one or both of compare and delete_datum can be `NULL`.
 
-Note that, for the exercise below, you need not implement object-oriented C code; your code can be pure C.
+Note that, for the exercise below, you need not implement object-oriented C code; your code can be imperative C.
 
 ------------------------------------------------------------
 
