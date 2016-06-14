@@ -5,6 +5,14 @@ PDR: Objective C Tutorial
 
 Throughout this semester, we have studied C++, which was one way to add object oriented programming capability to the C programming language.  There are other languages that also do that: the one that we will study in this pre-lab is Objective C.  The others are described [here](http://en.wikipedia.org/wiki/C_programming_language#Related_languages).  Objective C had mostly died out as a language that was widely used until Apple decided to use it for their iPhone (and now iPad) application development.  Now it's all the rage.  We want you to be familiar with it, so that you can see a different way to allow for object oriented programming using a C-like language.  
 
+### But, why? ###
+
+Wait a minute -- isn't Objective C a [dying programming language](http://www.infoworld.com/article/2935995/application-development/objective-c-spirals-downward-in-language-popularity.html)?
+
+Well, yes and no.  Objective C was exclusively used to implement iOS apps (i.e., iPad, iPhone, and iPod) .  But with the recent advent of [Swift](https://developer.apple.com/swift/), more people are moving toward that and away from Objective C.  So while Objective C is seeing a decline in how much it is used, it is [not going anywhere anytime soon](http://www.huffingtonpost.com/ahmed-eid/apples-swift-is-great-but_b_5492239.html).
+
+However, the point of having this tutorial is not about being an iOS developer -- instead, it's to show you that there is another way to add objects to C other than C++.
+
 ### Objective C Installation ###
 
 The first part of the pre-lab is to make sure you have access to a compilation environment for Objective C.
@@ -21,7 +29,7 @@ If you are having problems getting the compilation to work for you, come speak t
 
 ### Compiling an Objective C program ###
 
-To compile your code on either Mac OS X or Linux, enter `clang *.m -lobjc`.  With C++, you would compile all of your .cpp files (`*.cpp`); with Objective C, you compile all of your .m files (hence, `*.m`).  Note that you will use a longer compilation command later, which is described below.  Since this is not Objective C++ (which [does exist](http://en.wikipedia.org/wiki/Objective_c#Objective-C%2B%2B)), we are using `clang` instead of `clang++`.  You should put the `-lobjc` part in there -- that tells clang to link your code to the Objective C library to allow your program to run.  Note that some platforms will not need the `-lobjc` line, but others will, and it doesn't hurt to put it in anyway.
+To compile your code on either Mac OS X or Linux, enter `clang *.m -lobjc`.  With C++, you would compile all of your .cpp files (`*.cpp`); with Objective C, you compile all of your .m files (hence, `*.m`).  Note that you will use a longer compilation command later, which is described below.  Since this is not Objective C++ (which [does exist](http://en.wikipedia.org/wiki/Objective-C#Objective-C.2B.2B)), we are using `clang` instead of `clang++`.  You should put the `-lobjc` part in there -- that tells clang to link your code to the Objective C library to allow your program to run.  Note that some platforms will not need the `-lobjc` line, but others will, and it doesn't hurt to put it in anyway.
 
 Enter the following hello world program into a [helloworld.m](helloworld.m.html) ([src](helloworld.m)) file -- Objective C uses .h files for the interfaces (i.e., header files), just like C++ does.  For the implementation files, however, Objective C uses a .m extension instead of the .cpp extension that C++ uses.
 
@@ -46,7 +54,7 @@ If you are interested in the history of Objective C, and why it's used on the Ap
 
 ### Differences with the Wikibooks Tutorials ###
 
-The tutorials on Wikibooks are sufficient for this tutorial.  However, there are a few changes that **MUST** be made for your program to compile and run properly!  There are four differences to keep in mind.  The rest of the tutorials are valid, but the changes mentioned here will need to always differ from what the tutorial states.
+The tutorials on Wikibooks are sufficient for this tutorial.  However, there are a few changes that **MUST** be made for your program to compile and run properly!  There are five differences to keep in mind.  The rest of the tutorials are valid, but the changes mentioned here will need to always differ from what the tutorial states.
 
 **Difference 1: the `#import` line**
 
@@ -64,7 +72,7 @@ In our installations, both on the Linux VirtualBox image and on Mac OS X, we wil
 
 **Difference 2: the super-class**
 
-We have included (well, imported) a different file, and thus can no longer subclass from `Object`.  THus, we must change the super class name from `Object` to `NSObject`.  This is line 3 of hte Point.h class in the [Objective C Syntax](http://en.wikibooks.org/wiki/Objective-C_Programming/syntax) tutorial on Wikibooks.
+We have included (well, imported) a different file, and thus can no longer subclass from `Object`.  Thus, we must change the super class name from `Object` to `NSObject`.  This is line 3 of the Point.h class in the [Objective C Syntax](http://en.wikibooks.org/wiki/Objective-C_Programming/syntax) tutorial on Wikibooks.
 
 **Difference 3: compilation command**
 
@@ -72,6 +80,12 @@ As our programs are now more complicated than just a "hello world", the compilat
 
 ```
 clang -I /usr/include/GNUstep/ *.m -lobjc -lgnustep-base
+```
+
+On some Linux systems (specificially, on 64-bit Ubuntu 16.04 systems), we had to use the following compilation line; if the one above does not work, then try this one:
+
+```
+clang -I /usr/include/GNUstep/ -I /usr/lib/gcc/x86_64-linux-gnu/5/include/ *.m -lobjc -lgnustep-base
 ```
 
 On Mac OS X, the compilation command is much simpler, and is what was shown above:
@@ -83,6 +97,11 @@ clang *.m -lobjc
 **Difference 4: other libraries to use**
 
 If you are compiling the Point class, described in the [Objective C Syntax](http://en.wikibooks.org/wiki/Objective-C_Programming/syntax) tutorial on Wikibooks, the compiler will need to know what the `sqrt()` function is.  Thus, you will have to link it to the math library: put `-lm` at the end of the compilation command, otherwise it will tell you that it cannot find the `sqrt()` implementation.  This likely won't be necessary for the program you have to do below, but it will be necessary for the Point class program.
+
+**Difference 5: use `release` instead of `free`**
+
+To deallocate an object, use release instead of free.  In other words, `[temp free];` will **not** work (which is what the tutorial states), but `[temp release];` will work properly.
+
 
 ### Hack some Objective C code ###
 
@@ -132,7 +151,7 @@ A few notes while working on the program:
 3. The `this` pointer in Objective C is called `self`
 4. The `NULL` pointer in C++ is called `nil` in Objective C
 5. Be careful about naming your list class "List" if you are using Mac OS X, as it will conflict with the List class already declared in an existing library.  Name it something else.
-6. An object is deleted by calling the `free` method, which is automatically inherited by all classes.  To create a custom destructor, create another method (`freeCompletely`, or similar), and just call `self free` as the last command of that destructor.  But you probably don't need a custom constructor for this program.
+6. An object is deleted by calling the `dealloc` method, which is automatically inherited by all classes.  You should NOT call `dealloc` anywhere in your code -- `dealloc` is called by the Objective C runtime (in a similar way the destructor is called when an object goes out of scope in C++).  To create a custom destructor, override the `dealloc` method, and just call `super dealloc` as the last command of that destructor.  But you probably don't need a custom constructor for this program.  To indicate to the runtime that you are no longer using the object, call `release` on that object (e.g., `[myObj release]`).
 
 ### Constructors ###
 
